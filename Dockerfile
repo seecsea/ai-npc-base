@@ -1,6 +1,5 @@
 # Set the base image
 ARG BASE_IMAGE=pytorch/pytorch:2.11.0-cuda13.0-cudnn9-runtime
-ARG CODESERVER_VERSION=4.108.2
 FROM ${BASE_IMAGE}
 
 # Set the shell and enable pipefail for better error handling
@@ -16,6 +15,8 @@ ENV RP_WORKSPACE=/workspace
 
 # Set TZ and Locale
 ENV TZ=Etc/UTC
+
+ARG CODESERVER_VERSION=4.108.2
 
 # 以及按需安装其他软件
 RUN apt-get update && apt-get install -y git git-lfs curl && apt-get autoremove -y && apt-get clean && \
