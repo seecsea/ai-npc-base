@@ -1,5 +1,6 @@
 # Set the base image
 ARG BASE_IMAGE=pytorch/pytorch:2.11.0-cuda13.0-cudnn9-runtime
+ARG CODESERVER_VERSION=4.108.2
 FROM ${BASE_IMAGE}
 
 # Set the shell and enable pipefail for better error handling
