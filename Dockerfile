@@ -19,12 +19,20 @@ ENV TZ=Etc/UTC
 ARG CODESERVER_VERSION=4.108.2
 
 # 以及按需安装其他软件
-RUN apt-get update && apt-get install -y git git-lfs curl && apt-get autoremove -y && apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN apt-get update && apt-get install -y file curl bash dirmngr apt-transport-https lsb-release ca-certificates && apt-get autoremove -y && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
+RUN apt-get update && apt install -y nodejs && apt-get autoremove -y && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # 安装 ssh 服务，用于支持 VSCode 客户端通过 Remote-SSH 访问开发环境
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y wget unzip openssh-server tzdata && apt-get autoremove -y && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y git git-lfs wget jq unzip openssh-server tzdata && apt-get autoremove -y && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* && \
+    git lfs install && \
+    npm install skills -g && \
+    npm install -g @cnbcool/cnb-cli && \
+    npm cache clean --force && \
+    rm -rf /tmp/*
 
 RUN mkdir -p /app/ai-server
 WORKDIR /app/ai-server
