@@ -19,7 +19,7 @@ ENV TZ=Etc/UTC
 ARG CODESERVER_VERSION=4.108.2
 
 # 以及按需安装其他软件
-RUN apt-get update && apt-get install -y file curl bash dirmngr apt-transport-https lsb-release ca-certificates && apt-get autoremove -y && \
+RUN apt-get update && apt-get install -y file curl aria2 bash dirmngr apt-transport-https lsb-release ca-certificates && apt-get autoremove -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
 RUN apt-get update && apt install -y nodejs && apt-get autoremove -y && \
@@ -34,7 +34,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y git git-
     npm cache clean --force && \
     rm -rf /tmp/*
 
-RUN mkdir -p /app/ai-server
+RUN mkdir -p /app/ai-server /app/models
 WORKDIR /app/ai-server
 
 RUN pip install accelerate transformers==5.7.0 --no-cache --break-system-packages
@@ -76,5 +76,21 @@ RUN echo 'echo -e "\nFor detailed documentation and guides, please visit:\n\033[
 # 指定字符集支持命令行输入中文（根据需要选择字符集）
 ENV LANG C.UTF-8
 ENV LANGUAGE C.UTF-8
+
+# 将 Comfyui 代码下载到 /app 目录, 并安装依赖
+WORKDIR /app
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git \
+    && cd ComfyUI/ \
+    && git fetch --tags \
+    && git checkout v0.20.1 \
+    && pip install -r requirements.txt --no-cache-dir --break-system-packages
+
+RUN mkdir -p /tmp
+WORKDIR /tmp
+
+RUN git clone https://github.com/crystian/ComfyUI-Crystools.git
+RUN mv ComfyUI-Crystools /app/ComfyUI/custom_nodes/ && cd /app/ComfyUI/custom_nodes/ComfyUI-Crystools/ && pip install -r requirements.txt --no-cache-dir --break-system-packages
+
+WORKDIR /app
 
 RUN echo "Hello BigBomb!"
