@@ -34,9 +34,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y git git-
     npm cache clean --force && \
     rm -rf /tmp/*
 
-# 安装hf工具，更方便操作hf
-RUN curl -LsSf https://hf.co/cli/install.sh | bash
-
 RUN mkdir -p /app/ai-server /app/models
 WORKDIR /app/ai-server
 
