@@ -19,7 +19,7 @@ ENV TZ=Etc/UTC
 ARG CODESERVER_VERSION=4.108.2
 
 # 以及按需安装其他软件
-RUN apt-get update && apt-get install -y file curl aria2 bash dirmngr apt-transport-https lsb-release ca-certificates && apt-get autoremove -y && \
+RUN apt-get update && apt-get install -y file curl aria2 bash net-tools dirmngr apt-transport-https lsb-release ca-certificates && apt-get autoremove -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
 RUN apt-get update && apt install -y nodejs && apt-get autoremove -y && \
@@ -33,6 +33,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y git git-
     npm install -g @cnbcool/cnb-cli && \
     npm cache clean --force && \
     rm -rf /tmp/*
+
+# 安装hf工具，更方便操作hf
+RUN curl -LsSf https://hf.co/cli/install.sh | bash
 
 RUN mkdir -p /app/ai-server /app/models
 WORKDIR /app/ai-server
