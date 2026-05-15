@@ -12,8 +12,8 @@ ENV SHELL=/bin/bash \
     RP_WORKSPACE=/workspace \
     CNB_MODEL_PATH=/app/models \
     TZ=Etc/UTC \
-    LANG C.UTF-8 \
-    LANGUAGE C.UTF-8
+    LANG=C.UTF-8 \
+    LANGUAGE=C.UTF-8
 
 ARG CODESERVER_VERSION=4.108.2
 
