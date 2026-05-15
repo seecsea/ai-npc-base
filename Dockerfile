@@ -6,13 +6,13 @@ FROM ${BASE_IMAGE}
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Set basic environment variables
-ENV SHELL=/bin/bash 
-    PYTHONUNBUFFERED=True 
-    DEBIAN_FRONTEND=noninteractive
-    RP_WORKSPACE=/workspace
-    CNB_MODEL_PATH=/app/models
-    TZ=Etc/UTC
-    LANG C.UTF-8
+ENV SHELL=/bin/bash \
+    PYTHONUNBUFFERED=True \
+    DEBIAN_FRONTEND=noninteractive \
+    RP_WORKSPACE=/workspace \
+    CNB_MODEL_PATH=/app/models \
+    TZ=Etc/UTC \
+    LANG C.UTF-8 \
     LANGUAGE C.UTF-8
 
 ARG CODESERVER_VERSION=4.108.2
