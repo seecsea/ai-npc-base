@@ -5,6 +5,10 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+# 定义一个全局变量，方便后续统一修改 ComfyUI 的版本
+env:
+  COMFYUI_VERSION: "0.21.1"
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -34,11 +38,13 @@ jobs:
           # 如果你的文件名是 Dockerfile.base-image，请取消下行注释
           # file: ./Dockerfile.base-image
           push: true
+          build-args: |
+            COMFYUI_VERSION=${{ env:COMFYUI_VERSION }}
           # 请将 <YOUR_USERNAME> 替换为你的 Docker Hub 用户名
           # 或者直接使用：${{ secrets.DOCKERHUB_USERNAME }}/ai-npc-base:latest
           tags: |
-            ${{ vars.DOCKER_HUB_USERNAME }}/ai-npc-base:${{ steps.date.outputs.DATE }}
-            ${{ vars.DOCKER_HUB_USERNAME }}/ai-npc-base:${{ github.sha }}
+            ${{ vars.DOCKER_HUB_USERNAME }}/ai-npc-base:torch2.9.1-cu130-py3.12-${{ steps.date.outputs.DATE }}
+            ${{ vars.DOCKER_HUB_USERNAME }}/ai-npc-base:torch2.9.1-cu130-py3.12-${{ env.COMFYUI_VERSION }}
           
           # 使用 GitHub 缓存加速后续构建
           cache-from: type=gha
