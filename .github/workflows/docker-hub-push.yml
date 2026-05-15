@@ -39,7 +39,7 @@ jobs:
           # file: ./Dockerfile.base-image
           push: true
           build-args: |
-            COMFYUI_VERSION=${{ env:COMFYUI_VERSION }}
+            COMFYUI_VERSION=${{ env.COMFYUI_VERSION }}
           # 请将 <YOUR_USERNAME> 替换为你的 Docker Hub 用户名
           # 或者直接使用：${{ secrets.DOCKERHUB_USERNAME }}/ai-npc-base:latest
           tags: |
